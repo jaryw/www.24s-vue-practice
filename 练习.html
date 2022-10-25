@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      li {
+        list-style: none;
+      }
+      a {
+        text-decoration: none;
+        color:rgba(255, 0, 0, 0.232)
+      }
+      .modifier {
+        margin-top: 5px;
+        margin-left: 10px;
+        background-color: #d2d0cd;
+      }
+      .modifier>ul{
+        margin-top: 10px;
+        height: 42px;
+      }
+      .modifier>ul>li {
+        float: left;
+        margin-left: 10px;
+        border: 1px solid #1e1e1e;
+      }
+      .keyBoard {
+        margin-top: 10px;
+        margin-left: 10px;
+        background-color: #d2d0cd;
+      }
+      .keyBoard {
+        margin-bottom: 5px;
+      }
+      .personName {
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+      .order {
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- 内置指令：start -->
+      <!-- <div>你好,{{name}}</div> -->
+      <!-- v-text start -->
+      <!-- 1.作用：向其所在的节点中渲染文本内容。
+      2.与插值语法的区别：v-text会替换掉节点中的内容，{{xx}}则不会。 -->
+      <!-- <div v-text="name"></div>
+        <div v-text="src"></div> -->
+      <!-- v-text end -->
+
+      <!-- v-html start -->
+      <!-- <div v-html="src"></div> 
+        v-clock (没有值)1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+						2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+      <h2 v-cloak>{{name}}</h2> -->
+
+      <!-- v-once 1.v-once所在节点在初次动态渲染后，就视为静态内容了。
+      2.以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。 -->
+      <!-- <h2 v-once>初始化n值是:{{n}}</h2> -->
+      <!-- <h2>Vue其实很简单</h2>
+      <h2>当前的n值是:{{n}}</h2>
+      <button @click="n++">n递增1</button> -->
+
+      <!-- v-pre用了以后Vue不再解析， 有时候能起到优化效果 -->
+      <!-- <h2 v-pre>Vue其实很简单</h2> -->
+
+      <!-- 内置指令 end  -->
+
+      <!-- 生命周期部分 -->
+      <!-- <h2>当前的n值是{{n}}</h2>
+      <button @click="add">点击n+1</button>
+      <button @click="bye">删除vm+1</button> -->
+
+      <div class="modifier" @click="showInfo">
+        <h4>事件修饰符部分</h4>
+        <ul>
+          <li> 1.欢迎{{name}}到美丽的<a @click="showInfo" href="http://www.baidu.com">百度</a>做客</li>
+          <li> 2.阻止{{name}}跳转到<a @click.prevent="showInfo2" href="http://www.baidu.com">百度</a>做客</li>
+          <li> 3.不跳转{{name}}再冒泡<a @click.prevent.stop="showInfo2" href="http://www.baidu.com">百度</a>做客</li>
+          <li> 4.不冒泡{{name}}再不跳转<a @click.stop.prevent="showInfo2" href="http://www.baidu.com">百度</a>做客</li>
+        </ul>
+        <button @click.once="showInfo">once点击事件</button>
+      </div>
+      <!-- 键盘事件  -->
+      <div class="keyBoard">
+        <h4>键盘事件</h4>
+        <div class="keyBoard">
+          <input type="text" placeholder="按下回车弹窗" @keydown.enter="showInfo3">
+          <input type="text" placeholder="按下delete弹窗" @keydown.delete="showInfo3">
+          <input type="text" placeholder="按下esc弹窗" @keydown.esc="showInfo3">
+          <input type="text" placeholder="按下Capslock弹窗" @keydown.caps-lock="showInfo3">
+           <!-- tab要搭配keydown使用 -->
+          <input type="text" placeholder="按下Tab弹窗" @keydown.tab="showInfo3">
+          <input type="text" placeholder="down按下ctrl弹窗" @keydown.ctrl="showInfo3">
+          <input type="text" placeholder="up按下ctrl弹窗" @keyup.ctrl="showInfo3">
+          <input type="text" placeholder="up按下ctrl x弹窗" @keyup.ctrl.x="showInfo3">
+          <input type="text" placeholder="请输入内容" @keydown="showInfo">
+          
+          <!-- 自定义键盘事件 -->
+          <input type="text" placeholder="自定义-按回车弹窗" @keydown.huiche="showInfo3">
+
+        </div>
+  
+      </div>
+      <!-- 姓名案例 计算实行简单实现-->
+      <div class="personName">
+        <h4>同学信息</h4>
+        姓：<input type="text" v-model="firstName">
+        名：<input type="text" v-model="lastName">
+        <!-- 计算属性里面算出全名 -->
+        全名：<span>{{fullName}}</span>
+      </div>
+      <!-- 内置指令复习 -->
+      <div class="order">
+        <h4>内置指令</h4>
+        <!-- v_text -->
+        <div>
+        <div v-text="name"></div>
+        <div v-text="skill"></div>
+        </div>
+        <!-- v-html  -->
+        <div>
+          <div v-html="skill"></div>
+          <!-- <div>
+            <a href="http://www.baidu.com" @click="skill">跳转百度</a>
+            <a href="http://www.baidu.com" @click.prevent ="skill">不跳转百度</a>
+          </div> -->
+          <!-- v-html  -->
+          <div v-html="src"></div>
+          <!-- <div v-html="src2"></div> -->
+        </div>
+        <!-- v-once  -->
+
+      </div>
+    </div>
+    <!-- <script type="text/javascript" src="http://localhost:8080/resource/5s/vue.js"></script> -->
+  </body>
+
+  <script>
+
+     // 定义一个别名按键，用于触发键盘事件
+    // Vue.config.keyCode.huiche = 13
+
+    new Vue({
+      // 定义一个别名按键，用于触发键盘事件
+      el: "#root",
+      data: {
+        src:'<a href="http://www.baidu.com">点击跳转到百度</a>',
+        // src2:'<h3>你好啊</h3>',
+        skill:'天火三玄变',
+        firstName:'萧',
+        lastName:'炎',
+        // n:'1',
+        name:'萧炎',
+        // src:'<h3>努力了吗</h3>'
+      },
+      methods: {
+        showInfo3(e){
+          alert('输入成功')
+          // console.log(e.target,e.keyCode)
+          console.log(e.key,e.keyCode)
+        },
+        showInfo(){
+          alert('下一步即将做客百度')
+        },
+        showInfo2(){
+          alert('阻住下一步跳转到百度')
+        }
+        // add(){
+        //   this.n++
+        // },
+        // bye(){
+        //   console.log('bye')
+        //   this.$destroy
+        // }
+      },
+      computed:{
+        fullName(){
+          return this.firstName + this.lastName
+        }
+      },
+      // 将要创建
+      // beforeCreate() {
+      //   console.log('beforeCreate')
+      // },
+      // // 船舰完毕 
+      // created() {
+      //   console.log('created')
+      // },
+      // beforeMount() {
+      //   console.log('beforeMount')
+      // },
+      // mounted() {
+      //   // 验证当前是否为真实DOM
+      //   console.log('mounted')
+      //   console.log('mounted',this.$el instanceof HTMLElement)
+      // },
+      // beforeUpdate() {
+      //   console.log('beforeUpdate')
+      // },
+      // beforeDestroy() {
+      //   console.log('beforeDestroy')
+      // },
+      // destroyed() {
+      //   console.log('destroyed')
+      // },
+    
+    });
+
+    let number = 22
+    let test = {
+      name:'吴昊',
+      sex:'男'
+    }
+// 变量名，增加的属性
+    Object.defineProperty(test,'age',{
+      // writable:true,  //这里打开之后会报错，我还没理解原因
+      get(){
+        console.log('发生调用')
+        return number
+      },
+      set(value){
+        console.log('发生修改')
+        number = value  
+      }
+    })
+    console.log(test)
+  </script>
+
+  
+</html>
